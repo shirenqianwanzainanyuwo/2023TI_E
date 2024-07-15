@@ -43,6 +43,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		}
 		else{
 		task=ChuanKoPing_receive_buff[8];
+		ifstop=0;
 		}
 		printf("task=%d\n",task);
 		printf("ifstop=%d\n",ifstop);

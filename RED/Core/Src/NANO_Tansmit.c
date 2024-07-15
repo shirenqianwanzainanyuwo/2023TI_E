@@ -18,7 +18,6 @@ typedef struct {
     int X_CURRENT;
 		int Y_AIM;
     int Y_CURRENT;
-	  int NOT_FIND_AIM;
 } NANO_RecData;
 
  NANO_RecData NANO_rec_data;
@@ -28,17 +27,16 @@ typedef struct {
 
 ////////////////////////////////////////////
 void NANO_recieve(void){
-				NANO_rec_data.X_CURRENT = *((int *) (&NANO_receive_buff[0]));
-				NANO_rec_data.Y_CURRENT = *((int *) (&NANO_receive_buff[4]));
-				NANO_rec_data.X_AIM = *((int *) (&NANO_receive_buff[8]));
-				NANO_rec_data.Y_AIM = *((int *) (&NANO_receive_buff[12]));
-				NANO_rec_data.NOT_FIND_AIM = *((int *) (&NANO_receive_buff[16]));
+				NANO_rec_data.X_AIM = *((int *) (&NANO_receive_buff[0]));
+				NANO_rec_data.Y_AIM = *((int *) (&NANO_receive_buff[4]));
+				NANO_rec_data.X_CURRENT = *((int *) (&NANO_receive_buff[8]));
+				NANO_rec_data.Y_CURRENT = *((int *) (&NANO_receive_buff[12]));
+				ifstop = *((int *) (&NANO_receive_buff[16]));
 				
-				printf("X_CURRENT=%d ",NANO_rec_data.X_CURRENT);
-				printf("Y_CURRENT=%d ",NANO_rec_data.Y_CURRENT);
-				printf("X_AIM=%d ",NANO_rec_data.X_AIM);				
-				printf("Y_AIM=%d ",NANO_rec_data.Y_AIM);
-				printf("NOT_FIND_AIM=%d ",NANO_rec_data.NOT_FIND_AIM);
+	      printf("AIM:(%d,%d )",NANO_rec_data.Y_AIM,NANO_rec_data.X_AIM);
+				printf("CURRENT:(%d,%d )",NANO_rec_data.Y_CURRENT,NANO_rec_data.X_CURRENT);
+
+				printf("ifstop=%d \n\n",ifstop);
 }
 
 void NANO_send(void){//发送任务1234
@@ -114,32 +112,33 @@ void Encoder_Angle(void){
 //范围yaw1300-1700,pich1400-1800,10个机械角度为单位
 
  //检测到了
- if(NANO_rec_data.NOT_FIND_AIM==0){
+ if(ifstop==0){
 	//pich
 		if(NANO_rec_data.Y_AIM>NANO_rec_data.Y_CURRENT){
 			//下移，pich
-			angle_pich=angle_pich-10;
+			angle_pich=angle_pich-1;
 		}
 		if(NANO_rec_data.Y_AIM<NANO_rec_data.Y_CURRENT){
 			//上移,pich
-			angle_pich=angle_pich+10;
+			angle_pich=angle_pich+1;
 		}
 	
 	//yaw		
 		if(NANO_rec_data.X_AIM>NANO_rec_data.X_CURRENT){
 			//右移，yaw
-			angle_yaw=angle_yaw-10;
+			angle_yaw=angle_yaw-1;
 		}
 		if(NANO_rec_data.X_AIM<NANO_rec_data.X_CURRENT){
 			//左移，yaw
-			angle_yaw=angle_yaw+10;
+			angle_yaw=angle_yaw+1;
 		}
 		Limit_Angle();
+		printf("aim_angle:(%d,%d)", angle_pich,angle_yaw);
 
 	}
 
  //没有检测到，串口屏暂停，停止
- if(NANO_rec_data.NOT_FIND_AIM==1&&ifstop==1){
+  while (ifstop == 1) {
 		angle_pich=angle_pich;
 		angle_yaw=angle_yaw;
 	

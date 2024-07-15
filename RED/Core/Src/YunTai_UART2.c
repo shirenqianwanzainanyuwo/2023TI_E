@@ -29,11 +29,11 @@ void recieve(void){
 			int digit = Print_ANGLE[i] - '0';
 			rec_data.angle_pich = rec_data.angle_pich * 10 + digit;
 		}
-		printf("angle is: %d\n", rec_data.angle_pich);
+		//printf("pich is: %d\n", rec_data.angle_pich);
 				
 		//id
 		rec_data.id0 = (int)Print_ANGLE[3] - '0'; 
-		printf("id0 is: %d\n", rec_data.id0);
+		//printf("id0 is: %d\n", rec_data.id0);
 		
 	//yaw
 		rec_data.angle_yaw=0;
@@ -41,11 +41,13 @@ void recieve(void){
 			int digit = Print_ANGLE[i] - '0';
 			rec_data.angle_yaw = rec_data.angle_yaw * 10 + digit;
 		}
-		printf("angle is: %d\n", rec_data.angle_yaw);
+		//printf("yaw is: %d\n", rec_data.angle_yaw);
 				
 		//id
 		rec_data.id1 = (int)Print_ANGLE[13] - '0'; 
-		printf("id1 is: %d\n", rec_data.id1);
+		//printf("id1 is: %d\n", rec_data.id1);
+		
+		printf("curent_angle:(%d,%d)\n", rec_data.angle_pich,rec_data.angle_yaw);
 			
 		//HAL_UART_Transmit(&huart1, (uint8_t *)Print_ANGLE, sizeof(Print_ANGLE),0xFFFF);
 			
@@ -82,12 +84,12 @@ void send(int SendID_Pich,int SendAngle_Pich,int SendID_Yaw,int SendAngle_Yaw){/
 		//HAL_UART_Transmit(&huart1, (uint8_t *)SET_ANGLE_Pich, sizeof(SET_ANGLE_Pich),0xFFFF);
     HAL_UART_Transmit_DMA(&huart2, (uint8_t *)SET_ANGLE_Pich, sizeof(SET_ANGLE_Pich));   
 		   
-	 HAL_Delay(25);
+	 HAL_Delay(35);
 			
 		//HAL_UART_Transmit(&huart1, (uint8_t *)SET_ANGLE_Yaw, sizeof(SET_ANGLE_Yaw),0xFFFF);
     HAL_UART_Transmit_DMA(&huart2, (uint8_t *)SET_ANGLE_Yaw, sizeof(SET_ANGLE_Yaw));   
 
-    HAL_Delay(25);
+    HAL_Delay(35);
 		
 	
 	
