@@ -30,6 +30,8 @@ uart_test\nano_tansmit.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.
 uart_test\nano_tansmit.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c_ex.h
 uart_test\nano_tansmit.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 uart_test\nano_tansmit.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
+uart_test\nano_tansmit.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
+uart_test\nano_tansmit.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 uart_test\nano_tansmit.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 uart_test\nano_tansmit.o: ../Core/Inc/usart.h
 uart_test\nano_tansmit.o: ../Core/Inc/main.h

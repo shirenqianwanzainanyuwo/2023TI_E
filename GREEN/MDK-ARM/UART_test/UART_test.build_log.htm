@@ -22,26 +22,27 @@ Dialog DLL:      TCM.DLL V1.14.4.0
  
 <h2>Project:</h2>
 D:\STM32HAL project_Keil\2023E_GREEN\MDK-ARM\UART_test.uvprojx
-Project File Date:  07/14/2024
+Project File Date:  07/16/2024
 
 <h2>Output:</h2>
 Build target 'UART_test'
-compiling main.c...
-../Core/Inc/AnJian_OLED_Voice.h(9): warning:  #1-D: last line of file ends without a newline
-  #endif
-../Core/Src/main.c: 1 warning, 0 errors
 compiling NANO_Tansmit.c...
-..\Core\Src\NANO_Tansmit.c(106): warning:  #1-D: last line of file ends without a newline
+..\Core\Src\NANO_Tansmit.c(112): warning:  #177-D: variable "a" was declared but never referenced
+      static float a = 0.7;
+..\Core\Src\NANO_Tansmit.c(113): warning:  #177-D: variable "Err_LowOut" was declared but never referenced
+      int Err, Err_LowOut, temp;
+..\Core\Src\NANO_Tansmit.c(128): warning:  #177-D: variable "a" was declared but never referenced
+      static float a = 0.7;
+..\Core\Src\NANO_Tansmit.c(129): warning:  #177-D: variable "Err_LowOut" was declared but never referenced
+      int Err, Err_LowOut, temp;
+..\Core\Src\NANO_Tansmit.c(157): warning:  #1-D: last line of file ends without a newline
   }
-..\Core\Src\NANO_Tansmit.c: 1 warning, 0 errors
-compiling AnJian_OLED_Voice.c...
-../Core/Inc/AnJian_OLED_Voice.h(9): warning:  #1-D: last line of file ends without a newline
-  #endif
-..\Core\Src\AnJian_OLED_Voice.c: 1 warning, 0 errors
+..\Core\Src\NANO_Tansmit.c: 5 warnings, 0 errors
 linking...
-Program Size: Code=11656 RO-data=3280 RW-data=100 ZI-data=2100  
-FromELF: creating hex file...
-"UART_test\UART_test.axf" - 0 Error(s), 3 Warning(s).
+UART_test\UART_test.axf: Error: L6218E: Undefined symbol ifstop (referred from nano_tansmit.o).
+Not enough information to list image symbols.
+Finished: 1 information, 0 warning and 1 error messages.
+"UART_test\UART_test.axf" - 1 Error(s), 5 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -60,6 +61,7 @@ Package Vendor: ARM
 
    * Component: ARM::CMSIS:CORE:3.40.0
       Source file:   CMSIS\UserCodeTemplates\ARM\ITM_Retarget.c
+Target not created.
 </pre>
 </body>
 </html>

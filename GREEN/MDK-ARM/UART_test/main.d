@@ -30,9 +30,12 @@ uart_test\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h
 uart_test\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c_ex.h
 uart_test\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 uart_test\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
+uart_test\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
+uart_test\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 uart_test\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 uart_test\main.o: ../Core/Inc/dma.h
 uart_test\main.o: ../Core/Inc/i2c.h
+uart_test\main.o: ../Core/Inc/tim.h
 uart_test\main.o: ../Core/Inc/usart.h
 uart_test\main.o: ../Core/Inc/gpio.h
 uart_test\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
