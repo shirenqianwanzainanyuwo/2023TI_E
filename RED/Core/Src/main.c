@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "dma.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -112,12 +113,14 @@ int main(void)
   MX_USART2_UART_Init();
   MX_USART6_UART_Init();
   MX_USART3_UART_Init();
+  MX_TIM9_Init();
   /* USER CODE BEGIN 2 */
 	
 	printf("test");
 	HAL_UART_Receive_IT(&huart3, (uint8_t *)ChuanKoPing_receive_buff, sizeof(ChuanKoPing_receive_buff));
 	angle_pich=1500;
 	angle_yaw=1500;	
+	HAL_TIM_Base_Start_IT(&htim9);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -130,7 +133,7 @@ int main(void)
 		HAL_UART_Receive_DMA(&huart6, (uint8_t*)NANO_receive_buff, 20);
 		NANO_recieve();//接收像素坐标
 		NANO_send();//发送任务
-		Encoder_Angle();//机械角度解算
+
 		
 		send(000,angle_pich,001,angle_yaw);//控制云台
 		HAL_UART_Receive_DMA(&huart2, (uint8_t*)Print_ANGLE, 20);

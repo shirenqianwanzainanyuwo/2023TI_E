@@ -31,5 +31,7 @@ uasrt_recieve_dma\chuankoping.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_h
 uasrt_recieve_dma\chuankoping.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h
 uasrt_recieve_dma\chuankoping.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 uasrt_recieve_dma\chuankoping.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
+uasrt_recieve_dma\chuankoping.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
+uasrt_recieve_dma\chuankoping.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 uasrt_recieve_dma\chuankoping.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 uasrt_recieve_dma\chuankoping.o: ../Core/Inc/usart.h

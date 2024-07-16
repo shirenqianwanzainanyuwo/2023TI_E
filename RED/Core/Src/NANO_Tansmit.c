@@ -12,12 +12,20 @@ extern uint8_t NANO_receive_buff[255];
 extern int task,ifstop;
 extern int id0,angle_pich,id1,angle_yaw;
 
+float Trace_Kp=-0.05,Trace_Ki=0.0025,Trace_Kd=0;
+
 
 typedef struct {
 		int X_AIM;
-    int X_CURRENT;
 		int Y_AIM;
+    int X_CURRENT;
     int Y_CURRENT;
+		
+		int X_AIM_last;
+		int Y_AIM_last;
+    int X_CURRENT_last;
+    int Y_CURRENT_last;	
+	
 } NANO_RecData;
 
  NANO_RecData NANO_rec_data;
@@ -26,12 +34,43 @@ typedef struct {
 
 
 ////////////////////////////////////////////
+//处理错误数据
+void NANO_recieve_Limit(void){
+	
+	if(NANO_rec_data.X_AIM>=620||NANO_rec_data.X_AIM<=0){
+		NANO_rec_data.X_AIM=NANO_rec_data.X_AIM_last;
+	}
+		
+	if(NANO_rec_data.X_CURRENT>=620||NANO_rec_data.X_CURRENT<=0){
+		NANO_rec_data.X_CURRENT=NANO_rec_data.X_CURRENT_last;
+	}
+	
+	
+		
+	if(NANO_rec_data.Y_AIM>=480||NANO_rec_data.Y_AIM<=0){
+		NANO_rec_data.Y_AIM=NANO_rec_data.Y_AIM_last;
+	}
+		
+	if(NANO_rec_data.Y_CURRENT>=480||NANO_rec_data.Y_CURRENT<=0){
+		NANO_rec_data.Y_CURRENT=NANO_rec_data.Y_CURRENT_last;
+	}
+
+
+}
+
 void NANO_recieve(void){
+				NANO_rec_data.X_AIM_last=NANO_rec_data.X_AIM;
+				NANO_rec_data.Y_AIM_last=NANO_rec_data.Y_AIM;
+				NANO_rec_data.X_CURRENT_last=NANO_rec_data.X_CURRENT_last;
+				NANO_rec_data.Y_CURRENT_last=NANO_rec_data.Y_CURRENT_last;
+	
 				NANO_rec_data.X_AIM = *((int *) (&NANO_receive_buff[0]));
 				NANO_rec_data.Y_AIM = *((int *) (&NANO_receive_buff[4]));
 				NANO_rec_data.X_CURRENT = *((int *) (&NANO_receive_buff[8]));
 				NANO_rec_data.Y_CURRENT = *((int *) (&NANO_receive_buff[12]));
 				ifstop = *((int *) (&NANO_receive_buff[16]));
+				
+				NANO_recieve_Limit();
 				
 	      printf("AIM:(%d,%d )",NANO_rec_data.Y_AIM,NANO_rec_data.X_AIM);
 				printf("CURRENT:(%d,%d )",NANO_rec_data.Y_CURRENT,NANO_rec_data.X_CURRENT);
@@ -100,44 +139,82 @@ void Limit_Angle(void){
 	}
 	
 //yaw
-	if(angle_yaw<=1400){
-		angle_yaw=1400;
+	if(angle_yaw<=1200){
+		angle_yaw=1200;
 	}
 	if(angle_yaw>=1800){
 		angle_yaw=1800;
 	}
 }
 
+
+
+int Trace_Position_PID(int Target, int Actual_Angle)
+{
+    static int Err_LowOut_last = 0;
+    static int Encoder_S = 0;
+    static float a = 0.7;
+    int Err, Err_LowOut, temp;
+    Err = Target - Actual_Angle;
+    Err_LowOut = (1 - a) * Err + a * Err_LowOut_last;
+    Encoder_S += Err_LowOut;
+    Encoder_S = Encoder_S > 2000 ? 2000 : (Encoder_S < -2000 ? -2000 : Encoder_S);
+    temp = Trace_Kp * Err_LowOut + Trace_Ki * Encoder_S + Trace_Kd * (Err_LowOut - Err_LowOut_last);
+    Err_LowOut_last = Err_LowOut;
+
+    return temp;
+}
+
+//void Encoder_Angle(void){
+////范围yaw1300-1700,pich1400-1800,10个机械角度为单位
+
+// //检测到了
+// if(ifstop==0){
+//	//pich
+//		if(NANO_rec_data.Y_AIM>NANO_rec_data.Y_CURRENT){
+//			//下移，pich
+//			angle_pich=angle_pich-1;
+//		}
+//		if(NANO_rec_data.Y_AIM<NANO_rec_data.Y_CURRENT){
+//			//上移,pich
+//			angle_pich=angle_pich+1;
+//		}
+//	
+//	//yaw		
+//		if(NANO_rec_data.X_AIM>NANO_rec_data.X_CURRENT){
+//			//右移，yaw
+//			angle_yaw=angle_yaw-1;
+//		}
+//		if(NANO_rec_data.X_AIM<NANO_rec_data.X_CURRENT){
+//			//左移，yaw
+//			angle_yaw=angle_yaw+1;
+//		}
+//		Limit_Angle();
+//		printf("aim_angle:(%d,%d)", angle_pich,angle_yaw);
+
+//	}
+
+// //没有检测到，串口屏暂停，停止
+//  while (ifstop == 1) {
+//		angle_pich=angle_pich;
+//		angle_yaw=angle_yaw;
+//	
+//	 }
+
+//}
+
 void Encoder_Angle(void){
-//范围yaw1300-1700,pich1400-1800,10个机械角度为单位
+//??yaw1300-1700,pich1400-1800,10????????
 
- //检测到了
+ //????
  if(ifstop==0){
-	//pich
-		if(NANO_rec_data.Y_AIM>NANO_rec_data.Y_CURRENT){
-			//下移，pich
-			angle_pich=angle_pich-1;
-		}
-		if(NANO_rec_data.Y_AIM<NANO_rec_data.Y_CURRENT){
-			//上移,pich
-			angle_pich=angle_pich+1;
-		}
-	
-	//yaw		
-		if(NANO_rec_data.X_AIM>NANO_rec_data.X_CURRENT){
-			//右移，yaw
-			angle_yaw=angle_yaw-1;
-		}
-		if(NANO_rec_data.X_AIM<NANO_rec_data.X_CURRENT){
-			//左移，yaw
-			angle_yaw=angle_yaw+1;
-		}
-		Limit_Angle();
-		printf("aim_angle:(%d,%d)", angle_pich,angle_yaw);
-
+	angle_pich+=Trace_Position_PID(NANO_rec_data.Y_AIM,NANO_rec_data.Y_CURRENT);
+	angle_yaw+=Trace_Position_PID(NANO_rec_data.X_AIM,NANO_rec_data.X_CURRENT);
+	Limit_Angle();
+	printf("aim_angle:(%d,%d)", angle_pich,angle_yaw);
 	}
 
- //没有检测到，串口屏暂停，停止
+ //?????,?????,??
   while (ifstop == 1) {
 		angle_pich=angle_pich;
 		angle_yaw=angle_yaw;

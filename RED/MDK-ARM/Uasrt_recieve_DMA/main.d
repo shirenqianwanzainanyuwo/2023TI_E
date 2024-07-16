@@ -28,8 +28,11 @@ uasrt_recieve_dma\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flas
 uasrt_recieve_dma\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h
 uasrt_recieve_dma\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 uasrt_recieve_dma\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
+uasrt_recieve_dma\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
+uasrt_recieve_dma\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 uasrt_recieve_dma\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 uasrt_recieve_dma\main.o: ../Core/Inc/dma.h
+uasrt_recieve_dma\main.o: ../Core/Inc/tim.h
 uasrt_recieve_dma\main.o: ../Core/Inc/usart.h
 uasrt_recieve_dma\main.o: ../Core/Inc/gpio.h
 uasrt_recieve_dma\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
