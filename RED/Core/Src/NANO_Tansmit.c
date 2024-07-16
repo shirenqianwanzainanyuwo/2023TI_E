@@ -12,8 +12,8 @@ extern uint8_t NANO_receive_buff[255];
 extern int task,ifstop;
 extern int id0,angle_pich,id1,angle_yaw;
 
-float Trace_Kp_Pich=-0.02,Trace_Ki_Pich=-0.0002,Trace_Kd_Pich=0;
-float Trace_Kp_Yaw=-0.03,Trace_Ki_Yaw=-0.0001,/*-0.01*/Trace_Kd_Yaw=0;/*-0.4*/
+float Trace_Kp_Pich=-0.025,Trace_Ki_Pich=-0.0003,Trace_Kd_Pich=0;
+float Trace_Kp_Yaw=-0.02,Trace_Ki_Yaw=-0.0003,Trace_Kd_Yaw=0.001;
 
 typedef struct {
 		int X_AIM;
@@ -134,8 +134,8 @@ void Limit_Angle(void){
 	if(angle_pich<=1300){
 		angle_pich=1300;
 	}
-	if(angle_pich>=1700){
-		angle_pich=1700;
+	if(angle_pich>=1800){
+		angle_pich=1800;
 	}
 	
 //yaw
@@ -167,16 +167,16 @@ int Trace_Position_PID_Yaw(int Target, int Actual_Angle)
 
 int Trace_Position_PID_Pitch(int Target, int Actual_Angle)
 {
-    static int Err_LowOut_last = 0;
+    static int Err_last = 0;
     static int Pitch_s = 0;
     static float a = 0.7;
     int Err, Err_LowOut, temp;
     Err = Target - Actual_Angle;
-    Err_LowOut = (1 - a) * Err + a * Err_LowOut_last;
-    Pitch_s += Err_LowOut;
-    Pitch_s = Pitch_s > 10000 ? 10000 : (Pitch_s < -10000 ? -10000 : Pitch_s);
-    temp = Trace_Kp_Pich * Err_LowOut + Trace_Ki_Pich * Pitch_s + Trace_Kd_Pich * (Err_LowOut - Err_LowOut_last);
-    Err_LowOut_last = Err_LowOut;
+    //Err_LowOut = (1 - a) * Err + a * Err_LowOut_last;
+    Pitch_s += Err;
+    Pitch_s = Pitch_s > 1900 ? 1900 : (Pitch_s < -1900 ? -1900 : Pitch_s);
+    temp = Trace_Kp_Pich * Err + Trace_Ki_Pich * Pitch_s + Trace_Kd_Pich * (Err - Err_last);
+    Err_last = Err;
 
     return temp;
 }
@@ -186,7 +186,7 @@ int Trace_Position_PID_Pitch(int Target, int Actual_Angle)
 void Encoder_Angle(void){
 
  if(ifstop==0){
-	//angle_pich+=Trace_Position_PID(NANO_rec_data.Y_AIM,NANO_rec_data.Y_CURRENT);
+	angle_pich+=Trace_Position_PID_Pitch(NANO_rec_data.Y_AIM,NANO_rec_data.Y_CURRENT);
 	angle_yaw+=Trace_Position_PID_Yaw(NANO_rec_data.X_AIM,NANO_rec_data.X_CURRENT);
 	Limit_Angle();
 	printf("aim_angle:(%d,%d)", angle_pich,angle_yaw);
