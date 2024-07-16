@@ -12,8 +12,8 @@ extern uint8_t NANO_receive_buff[255];
 extern int task,ifstop;
 extern int id0,angle_pich,id1,angle_yaw;
 
-float Trace_Kp=-0.05,Trace_Ki=0.0025,Trace_Kd=0;
-
+float Trace_Kp_Pich=-0.02,Trace_Ki_Pich=-0.0002,Trace_Kd_Pich=0;
+float Trace_Kp_Yaw=-0.03,Trace_Ki_Yaw=-0.0001,/*-0.01*/Trace_Kd_Yaw=0;/*-0.4*/
 
 typedef struct {
 		int X_AIM;
@@ -86,7 +86,7 @@ void NANO_send(void){//发送任务1234
 	
 }
 
-////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
 //send data to hc-05
 int ble_send(uint8_t *data,int len)
 {
@@ -149,72 +149,49 @@ void Limit_Angle(void){
 
 
 
-int Trace_Position_PID(int Target, int Actual_Angle)
+int Trace_Position_PID_Yaw(int Target, int Actual_Angle)
+{
+    static int Err_last = 0;
+    static int Yaw_s = 0;
+    static float a = 0.7;
+    int Err, Err_LowOut, temp;
+    Err = Target - Actual_Angle;
+    //Err_LowOut = (1 - a) * Err + a * Err_LowOut_last;
+    Yaw_s += Err;
+    Yaw_s = Yaw_s > 1600 ? 1600 : (Yaw_s < -1600 ? -1600 : Yaw_s);
+    temp = Trace_Kp_Yaw * Err + Trace_Ki_Yaw * Yaw_s + Trace_Kd_Yaw * (Err - Err_last);
+    Err_last = Err;
+
+    return temp;
+}
+
+int Trace_Position_PID_Pitch(int Target, int Actual_Angle)
 {
     static int Err_LowOut_last = 0;
-    static int Encoder_S = 0;
+    static int Pitch_s = 0;
     static float a = 0.7;
     int Err, Err_LowOut, temp;
     Err = Target - Actual_Angle;
     Err_LowOut = (1 - a) * Err + a * Err_LowOut_last;
-    Encoder_S += Err_LowOut;
-    Encoder_S = Encoder_S > 2000 ? 2000 : (Encoder_S < -2000 ? -2000 : Encoder_S);
-    temp = Trace_Kp * Err_LowOut + Trace_Ki * Encoder_S + Trace_Kd * (Err_LowOut - Err_LowOut_last);
+    Pitch_s += Err_LowOut;
+    Pitch_s = Pitch_s > 10000 ? 10000 : (Pitch_s < -10000 ? -10000 : Pitch_s);
+    temp = Trace_Kp_Pich * Err_LowOut + Trace_Ki_Pich * Pitch_s + Trace_Kd_Pich * (Err_LowOut - Err_LowOut_last);
     Err_LowOut_last = Err_LowOut;
 
     return temp;
 }
 
-//void Encoder_Angle(void){
-////范围yaw1300-1700,pich1400-1800,10个机械角度为单位
 
-// //检测到了
-// if(ifstop==0){
-//	//pich
-//		if(NANO_rec_data.Y_AIM>NANO_rec_data.Y_CURRENT){
-//			//下移，pich
-//			angle_pich=angle_pich-1;
-//		}
-//		if(NANO_rec_data.Y_AIM<NANO_rec_data.Y_CURRENT){
-//			//上移,pich
-//			angle_pich=angle_pich+1;
-//		}
-//	
-//	//yaw		
-//		if(NANO_rec_data.X_AIM>NANO_rec_data.X_CURRENT){
-//			//右移，yaw
-//			angle_yaw=angle_yaw-1;
-//		}
-//		if(NANO_rec_data.X_AIM<NANO_rec_data.X_CURRENT){
-//			//左移，yaw
-//			angle_yaw=angle_yaw+1;
-//		}
-//		Limit_Angle();
-//		printf("aim_angle:(%d,%d)", angle_pich,angle_yaw);
-
-//	}
-
-// //没有检测到，串口屏暂停，停止
-//  while (ifstop == 1) {
-//		angle_pich=angle_pich;
-//		angle_yaw=angle_yaw;
-//	
-//	 }
-
-//}
 
 void Encoder_Angle(void){
-//??yaw1300-1700,pich1400-1800,10????????
 
- //????
  if(ifstop==0){
-	angle_pich+=Trace_Position_PID(NANO_rec_data.Y_AIM,NANO_rec_data.Y_CURRENT);
-	angle_yaw+=Trace_Position_PID(NANO_rec_data.X_AIM,NANO_rec_data.X_CURRENT);
+	//angle_pich+=Trace_Position_PID(NANO_rec_data.Y_AIM,NANO_rec_data.Y_CURRENT);
+	angle_yaw+=Trace_Position_PID_Yaw(NANO_rec_data.X_AIM,NANO_rec_data.X_CURRENT);
 	Limit_Angle();
 	printf("aim_angle:(%d,%d)", angle_pich,angle_yaw);
 	}
 
- //?????,?????,??
   while (ifstop == 1) {
 		angle_pich=angle_pich;
 		angle_yaw=angle_yaw;
