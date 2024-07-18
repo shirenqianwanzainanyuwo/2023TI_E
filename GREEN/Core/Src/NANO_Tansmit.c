@@ -1,4 +1,5 @@
 #include "NANO_Tansmit.h"
+#include "oled.h"
 #include "usart.h"
 #include <stdio.h>
 
@@ -75,10 +76,10 @@ void NANO_recieve(void){
 				NANO_recieve_Limit();
 				
 				
-				printf("AIM:(%d,%d )",NANO_rec_data.Y_AIM,NANO_rec_data.X_AIM);
+				printf("\nAIM:(%d,%d )",NANO_rec_data.Y_AIM,NANO_rec_data.X_AIM);
 				printf("CURRENT:(%d,%d )",NANO_rec_data.Y_CURRENT,NANO_rec_data.X_CURRENT);
 
-				printf("ifstop=%d",ifstop);
+				printf("\nifstop=%d\t",ifstop);
 				printf("meet=%d\n ",meet);
 }
 
@@ -151,7 +152,11 @@ void Encoder_Angle(void){
   while (ifstop == 1||key%2==1) {
 		angle_pich=angle_pich;
 		angle_yaw=angle_yaw;
-	
+		OLED_ShowCHinese3(0,2,0); 
+		OLED_ShowCHinese3(16,2,1);
+		
+		
+		//printf("key=%d",key);
 	 }
 
 }

@@ -45,7 +45,7 @@ uint8_t NANO_receive_buff[255];
 /////////////////////////////////////////////////////////
 
 int angle_pich,angle_yaw;
-int meet,meet_last;
+int ifstop,meet,meet_last;
 
 /* USER CODE END PTD */
 
@@ -128,7 +128,6 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 		
-		key_scan();
 		HAL_UART_Receive_DMA(&huart6, (uint8_t*)NANO_receive_buff, 20);
 		NANO_recieve();//接收像素坐标
 
@@ -138,7 +137,7 @@ int main(void)
 		recieve();//接收位置
 		OLED_Printf();
 
-		
+
 		
   }
   /* USER CODE END 3 */

@@ -28,11 +28,11 @@ void recieve(void){
 			int digit = Print_ANGLE[i] - '0';
 			rec_data.angle_pich = rec_data.angle_pich * 10 + digit;
 		}
-		printf("\nangle is: %d\n", rec_data.angle_pich);
+		printf("\npich is: %d\n", rec_data.angle_pich);
 				
 		//id
 		rec_data.id0 = (int)Print_ANGLE[3] - '0'; 
-		printf("\nid0 is: %d\n", rec_data.id0);
+		//printf("\nid0 is: %d\n", rec_data.id0);
 		
 	//yaw
 		rec_data.angle_yaw=0;
@@ -40,13 +40,13 @@ void recieve(void){
 			int digit = Print_ANGLE[i] - '0';
 			rec_data.angle_yaw = rec_data.angle_yaw * 10 + digit;
 		}
-		printf("\nangle is: %d\n", rec_data.angle_yaw);
+		printf("yaw is: %d\n\n", rec_data.angle_yaw);
 				
 		//id
 		rec_data.id1 = (int)Print_ANGLE[13] - '0'; 
-		printf("\nid1 is: %d\n", rec_data.id1);
+		//printf("\nid1 is: %d\n", rec_data.id1);
 			
-		HAL_UART_Transmit(&huart1, (uint8_t *)Print_ANGLE, sizeof(Print_ANGLE),0xFFFF);
+		//HAL_UART_Transmit(&huart1, (uint8_t *)Print_ANGLE, sizeof(Print_ANGLE),0xFFFF);
 			
 }
 

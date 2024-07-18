@@ -21,24 +21,13 @@ void key_scan(void)
 
    if(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_0) == GPIO_PIN_SET)
   {
+		OLED_Clear();
     key++;
 		printf("key=%d\n",key);
 		HAL_UART_Transmit(&huart3, (uint8_t *)Voice_StopStart, sizeof(Voice_StopStart),0xFFFF);
-  }
-	
-	//判断key值
-	if(key%2==1){
-		//暂停
-		OLED_ShowCHinese3(0,2,0); 
-		OLED_ShowCHinese3(16,2,1);	
+		
 
 	}
-	if(key%2==0){
-		//启动
-		OLED_ShowCHinese4(0,2,0); 
-		OLED_ShowCHinese4(16,2,1);
-
-		}
 	
 }
 
@@ -62,7 +51,10 @@ void OLED_Printf(void){
 		OLED_ShowCHinese2(48,0,3);	
 		
 	}
-	
+		
+	//启动
+	OLED_ShowCHinese4(0,2,0); 
+	OLED_ShowCHinese4(16,2,1);
 	//OLED显示目标角度
 	sprintf((char *)OLED_Display,"Pich:%d",angle_pich);
 	OLED_ShowString(0,4,OLED_Display, 16);
